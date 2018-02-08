@@ -4,6 +4,7 @@
 
 requires "perl" => "5.10.0";
 requires "Env::Modulecmd" => "1.3";
+requires 'Devel::IPerl' => "0.009";
 
 test_requires "Test::More" => "0.88";
 
