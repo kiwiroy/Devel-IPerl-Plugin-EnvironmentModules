@@ -35,6 +35,28 @@ sub unload { shift; Env::Modulecmd::_modulecmd('unload', @_); }
 
 Devel::IPerl::Plugin::EnvironmentModules - Environment Modules
 
+=begin html
+
+<!-- Travis -->
+<a href="https://travis-ci.org/kiwiroy/Devel-IPerl-Plugin-EnvironmentModules">
+  <img src="https://travis-ci.org/kiwiroy/Devel-IPerl-Plugin-EnvironmentModules.svg?branch=master"
+       alt="Build Status" />
+</a>
+
+<!-- Coveralls -->
+<a href="https://coveralls.io/github/kiwiroy/Devel-IPerl-Plugin-EnvironmentModules?branch=master">
+  <img src="https://coveralls.io/repos/github/kiwiroy/Devel-IPerl-Plugin-EnvironmentModules/badge.svg?branch=master"
+       alt="Coverage Status" />
+</a>
+
+<!-- Kritika -->
+<a href="https://kritika.io/users/kiwiroy/repos/6049167555239475/heads/master/">
+  <img src="https://kritika.io/users/kiwiroy/repos/6049167555239475/heads/master/status.svg"
+       alt="Kritika Analysis Status" />
+</a>
+
+=end html
+
 =head1 DESCRIPTION
 
 When you have environment modules to work with.
