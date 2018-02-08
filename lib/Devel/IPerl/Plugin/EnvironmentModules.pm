@@ -4,6 +4,8 @@ use strict;
 use warnings;
 use Env::Modulecmd ();
 
+our $VERSION = '0.01';
+
 sub load { shift; Env::Modulecmd::_modulecmd('load', @_); }
 sub list { shift; Env::Modulecmd::_modulecmd('list');     }
 sub new  { bless {}, $_[0]; }
