@@ -6,14 +6,15 @@ use Env::Modulecmd ();
 
 our $VERSION = '0.01';
 
-sub load { shift; Env::Modulecmd::_modulecmd('load', @_); }
-sub list { shift; Env::Modulecmd::_modulecmd('list');     }
-sub new  { bless {}, $_[0]; }
+sub avail { shift; Env::Modulecmd::_modulecmd('avail');    }
+sub load  { shift; Env::Modulecmd::_modulecmd('load', @_); }
+sub list  { shift; Env::Modulecmd::_modulecmd('list');     }
+sub new   { bless {}, $_[0]; }
 
 sub register {
     my ($class, $iperl) = @_;
     my $self = $class->new;
-    for my $name(qw{load unload list show}) {
+    for my $name(qw{avail load unload list show}) {
       $iperl->helper("module_$name" => sub {
           my ($ip, $ret) = (shift, -1);
           return $ret if @_ == 0;
@@ -59,7 +60,10 @@ Devel::IPerl::Plugin::EnvironmentModules - Environment Modules
 
 =head1 DESCRIPTION
 
-When you have environment modules to work with.
+A plugin to use when you have L<environment modules|http://modules.sourceforge.net>
+to work with.
+
+The plugin is a wrapper for the L<Env::Modulecmd> perl module.
 
 =head1 SYNOPSIS
 
@@ -77,26 +81,90 @@ Called by C<<< IPerl->load_plugin('EnvironmentModules') >>>.
 
 =head1 REGISTERED METHODS
 
+=head2 module_avail
+
+  IPerl->module_list;
+
+Display a list of environment modules that are available.
+
 =head2 module_load
+
+  IPerl->module_load('gcc');
+
+Load a list of environment modules.
 
 =head2 module_list
 
+  IPerl->module_list;
+
+Display the list of environment modules that are loaded.
+
 =head2 module_show
 
+  IPerl->module_show('gcc');
+
+Display the environment modified by the given environment module.
+
 =head2 module_unload
+
+  IPerl->module_unload('gcc');
+
+Unload a list of environment modules.
 
 =head1 INTERNAL METHODS
 
 Not for end user consumption.
 
+=head2 avail
+
+  my $p = Devel::IPerl::Plugin::EnvironmentModules->new();
+  $p->avail;
+
+A more longwinded C<<< IPerl->module_avail; >>>.
+
 =head2 load
+
+  my $p = Devel::IPerl::Plugin::EnvironmentModules->new();
+  $p->load('gcc');
+
+A more longwinded C<<< IPerl->module_load; >>>.
 
 =head2 list
 
+  my $p = Devel::IPerl::Plugin::EnvironmentModules->new();
+  $p->list();
+
+A more longwinded C<<< IPerl->module_list; >>>.
+
 =head2 new
+
+  my $p = Devel::IPerl::Plugin::EnvironmentModules->new();
+
+Create a new instance.
 
 =head2 show
 
+  my $p = Devel::IPerl::Plugin::EnvironmentModules->new();
+  $p->show('gcc');
+
+A more longwinded C<<< IPerl->module_show; >>>.
+
 =head2 unload
+
+  my $p = Devel::IPerl::Plugin::EnvironmentModules->new();
+  $p->unload('gcc');
+
+A more longwinded C<<< IPerl->module_unload; >>>.
+
+
+=head1 SEE ALSO
+
+=over 4
+
+=item L<Env::Modulecmd>
+
+=item L<Devel::IPerl>
+
+=back
 
 =cut
