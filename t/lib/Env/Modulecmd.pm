@@ -8,6 +8,7 @@ use feature 'say';
 sub _modulecmd {
   my ($cmd) = shift;
   say STDERR 'list' if $cmd eq 'list';
+  say STDERR 'avail' if $cmd eq 'avail';
   say STDERR "$cmd @_" if $cmd =~ m/^(show|load|unload)$/;
   return 1;
 }
