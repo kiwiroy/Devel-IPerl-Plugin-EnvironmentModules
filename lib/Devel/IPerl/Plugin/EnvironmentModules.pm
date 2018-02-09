@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Env::Modulecmd ();
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 sub avail { shift; Env::Modulecmd::_modulecmd('avail');    }
 sub load  { shift; Env::Modulecmd::_modulecmd('load', @_); }
