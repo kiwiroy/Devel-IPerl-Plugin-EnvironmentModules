@@ -1,5 +1,8 @@
 Revision history for perl distribution Devel-IPerl-Plugin-EnvironmentModules
 
+0.03 Not Released
+ - integrate changes to PERL5LIB into the current kernel
+
 0.02 2018-02-09T16:16:19+1300
  - Plugin created
  - add supported helpers module_avail, module_list, module_load, module_show and

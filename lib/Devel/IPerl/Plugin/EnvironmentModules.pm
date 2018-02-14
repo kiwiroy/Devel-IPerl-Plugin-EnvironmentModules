@@ -2,12 +2,15 @@ package Devel::IPerl::Plugin::EnvironmentModules;
 
 use strict;
 use warnings;
+use Array::Diff ();
 use Env::Modulecmd ();
 
 our $VERSION = '0.02';
 
 sub avail { shift; Env::Modulecmd::_modulecmd('avail');    }
-sub load  { shift; Env::Modulecmd::_modulecmd('load', @_); }
+sub load  {
+  shift->_env_diff(sub { Env::Modulecmd::_modulecmd('load', @_); }, @_);
+}
 sub list  { shift; Env::Modulecmd::_modulecmd('list');     }
 sub new   { bless {}, $_[0]; }
 
@@ -26,7 +29,29 @@ sub register {
 }
 
 sub show   { shift; Env::Modulecmd::_modulecmd('show', @_);   }
-sub unload { shift; Env::Modulecmd::_modulecmd('unload', @_); }
+sub unload {
+  shift->_env_diff(sub { Env::Modulecmd::_modulecmd('unload', @_); }, @_);
+}
+
+## like around, but explicitly called.
+sub _env_diff {
+  my ($self, $orig) = (shift, shift);
+  my %before = %ENV; # shallow copy
+
+  my $ret = $orig->(@_);
+
+  if ($before{PERL5LIB} ne $ENV{PERL5LIB}) {
+    my $old = [ split /:/, $before{PERL5LIB} ];
+    my $new = [ split /:/, $ENV{PERL5LIB}    ];
+    my $ad  = Array::Diff->new;
+    $ad->diff($old, $new);
+    ## add or remove with lib
+    eval "use lib q[$_];" for (@{$ad->added});
+    eval "no lib q[$_];" for (@{$ad->deleted});
+  }
+
+  return $ret;
+}
 
 1;
 
