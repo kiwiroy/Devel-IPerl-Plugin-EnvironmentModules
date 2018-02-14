@@ -20,6 +20,7 @@ WriteMakefile(
 ,
   PREREQ_PM => {
   'Env::Modulecmd' => '1.3',
+  'Deve::IPerl' => '0.009',
   'perl' => 'v5.10.0'
 }
 ,
