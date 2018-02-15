@@ -8,6 +8,7 @@ use File::Temp qw{tempdir};
 
 our $PATH_TO_ADD = tempdir( CLEANUP => 1 );
 
+## no critic (Subroutines::ProhibitUnusedPrivateSubroutines)
 sub _modulecmd {
   my ($cmd) = shift;
   say STDERR 'list' if $cmd eq 'list';
