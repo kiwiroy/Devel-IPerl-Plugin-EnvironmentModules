@@ -11,8 +11,8 @@ our $PATH_TO_ADD = tempdir( CLEANUP => 1 );
 ## no critic (Subroutines::ProhibitUnusedPrivateSubroutines)
 sub _modulecmd {
   my ($cmd) = shift;
-  say STDERR 'list' if $cmd eq 'list';
-  say STDERR 'avail' if $cmd eq 'avail';
+  say STDERR 'list'    if $cmd eq 'list';
+  say STDERR 'avail'   if $cmd eq 'avail';
   say STDERR "$cmd @_" if $cmd =~ m/^(show|load|unload)$/;
   if ($cmd eq 'load') {
     _prepend_path('PERL5LIB', $PATH_TO_ADD, ":", 1);
