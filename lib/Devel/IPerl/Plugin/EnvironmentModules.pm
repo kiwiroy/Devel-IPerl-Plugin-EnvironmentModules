@@ -41,8 +41,8 @@ sub _env_diff {
   my $ret = $orig->(@_);
 
   if (($before{PERL5LIB} || '') ne ($ENV{PERL5LIB} || '')) {
-    my $old = [ split /:/, $before{PERL5LIB} ];
-    my $new = [ split /:/, $ENV{PERL5LIB}    ];
+    my $old = [ split /:/, $before{PERL5LIB} || '' ];
+    my $new = [ split /:/, $ENV{PERL5LIB}    || '' ];
     my $ad  = Array::Diff->new;
     $ad->diff($old, $new);
     ## add or remove with lib
