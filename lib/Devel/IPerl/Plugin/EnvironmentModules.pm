@@ -16,7 +16,7 @@ sub avail {
   return $stderr;
 }
 sub load  {
-  shift->_env_diff(sub { Env::Modulecmd::_modulecmd('load', @_); }, @_);
+  shift->_env_diff(sub { local ($^W) = 1; Env::Modulecmd::_modulecmd('load', @_); }, @_);
 }
 sub list  {
   my @args = (MODULECMD, qw{perl list});
@@ -47,7 +47,7 @@ sub show {
 }
 
 sub unload {
-  shift->_env_diff(sub { Env::Modulecmd::_modulecmd('unload', @_); }, @_);
+  shift->_env_diff(sub { local ($^W) = 1; Env::Modulecmd::_modulecmd('unload', @_); }, @_);
 }
 
 ## like around, but explicitly called.
