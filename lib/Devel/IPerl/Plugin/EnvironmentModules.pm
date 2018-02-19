@@ -9,21 +9,23 @@ use constant MODULECMD => $ENV{'PERL_MODULECMD'} || 'modulecmd';
 
 our $VERSION = '0.02';
 
-
 sub avail {
   my @args = (MODULECMD, qw{perl avail});
   my ($stderr, @result) = Capture::Tiny::capture_stderr { system { $args[0] } @args };
   return $stderr;
 }
+
 sub load  {
   shift->_env_diff(sub { local ($^W) = 1; Env::Modulecmd::_modulecmd('load', @_); }, @_);
 }
+
 sub list  {
   my @args = (MODULECMD, qw{perl list});
   my ($stderr, @result) = Capture::Tiny::capture_stderr { system { $args[0] } @args };
   return $stderr;
 }
-sub new   { bless {}, $_[0]; }
+
+sub new   { bless {}, ref($_[0]) || $_[0]; }
 
 sub register {
     my ($class, $iperl) = @_;

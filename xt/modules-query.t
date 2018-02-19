@@ -5,7 +5,7 @@ use warnings;
 use Test::More;
 use Devel::IPerl;
 use IPerl;
-use lib 't/lib';
+use lib 'xt/lib';
 use FindBin;
 use File::Spec::Functions qw{catfile};
 

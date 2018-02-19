@@ -5,7 +5,7 @@ use warnings;
 use Test::More;
 use Devel::IPerl;
 use IPerl;
-use lib 't/lib';
+use lib 'xt/lib';
 
 my $iperl = new_ok('IPerl');
 
