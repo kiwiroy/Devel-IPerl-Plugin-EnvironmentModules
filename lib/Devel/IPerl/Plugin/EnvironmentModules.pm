@@ -97,7 +97,7 @@ sub _env_diff {
 
 =head1 NAME
 
-Devel::IPerl::Plugin::EnvironmentModules - Environment Modules
+Devel::IPerl::Plugin::EnvironmentModules - interact with L<Environment Modules|http://modules.sourceforge.net> in a L<Jupyter|https://jupyter.org/> IPerl kernel
 
 =begin html
 
