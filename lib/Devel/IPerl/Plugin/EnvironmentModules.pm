@@ -7,7 +7,7 @@ use Array::Diff ();
 use Env::Modulecmd ();
 use constant MODULECMD => $ENV{'PERL_MODULECMD'} || 'modulecmd';
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 sub avail {
   my @args = (MODULECMD, qw{perl avail});
@@ -117,6 +117,12 @@ Devel::IPerl::Plugin::EnvironmentModules - Environment Modules
 <a href="https://kritika.io/users/kiwiroy/repos/6049167555239475/heads/master/">
   <img src="https://kritika.io/users/kiwiroy/repos/6049167555239475/heads/master/status.svg"
        alt="Kritika Analysis Status" />
+</a>
+
+<!-- CPAN -->
+<a href="https://badge.fury.io/pl/Devel-IPerl-Plugin-EnvironmentModules">
+  <img src="https://badge.fury.io/pl/Devel-IPerl-Plugin-EnvironmentModules.svg"
+       alt="CPAN version" />
 </a>
 
 =end html
