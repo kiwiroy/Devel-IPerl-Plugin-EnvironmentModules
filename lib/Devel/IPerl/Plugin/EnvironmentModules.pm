@@ -7,7 +7,7 @@ use Array::Diff ();
 use Env::Modulecmd ();
 use constant MODULECMD => $ENV{'PERL_MODULECMD'} || 'modulecmd';
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 sub avail {
   my @args = (MODULECMD, qw{perl avail});
