@@ -2,16 +2,27 @@ package Devel::IPerl::Plugin::EnvironmentModules;
 
 use strict;
 use warnings;
+use Capture::Tiny ();
 use Array::Diff ();
 use Env::Modulecmd ();
+use constant MODULECMD => $ENV{'PERL_MODULECMD'} || 'modulecmd';
 
 our $VERSION = '0.02';
 
-sub avail { shift; Env::Modulecmd::_modulecmd('avail');    }
+
+sub avail {
+  my @args = (MODULECMD, qw{perl avail});
+  my ($stderr, @result) = Capture::Tiny::capture_stderr { system { $args[0] } @args };
+  return $stderr;
+}
 sub load  {
   shift->_env_diff(sub { Env::Modulecmd::_modulecmd('load', @_); }, @_);
 }
-sub list  { shift; Env::Modulecmd::_modulecmd('list');     }
+sub list  {
+  my @args = (MODULECMD, qw{perl list});
+  my ($stderr, @result) = Capture::Tiny::capture_stderr { system { $args[0] } @args };
+  return $stderr;
+}
 sub new   { bless {}, $_[0]; }
 
 sub register {
@@ -20,7 +31,7 @@ sub register {
     for my $name(qw{avail load unload list show}) {
       $iperl->helper("module_$name" => sub {
           my ($ip, $ret) = (shift, -1);
-          return $ret if @_ == 0;
+          return $ret if $name =~ /^(load|show|unload)$/ && @_ == 0;
           my $cb = $self->can($name);
           return $self->$cb(@_);
       });
@@ -28,7 +39,13 @@ sub register {
     return 1;
 }
 
-sub show   { shift; Env::Modulecmd::_modulecmd('show', @_);   }
+sub show {
+  shift;
+  my @args = (MODULECMD, qw{perl show}, @_);
+  my ($stderr, @result) = Capture::Tiny::capture_stderr { system { $args[0] } @args };
+  return $stderr;
+}
+
 sub unload {
   shift->_env_diff(sub { Env::Modulecmd::_modulecmd('unload', @_); }, @_);
 }

@@ -4,6 +4,7 @@
 
 requires "perl" => "5.10.0";
 requires 'Array::Diff' => 0;
+requires 'Capture::Tiny' => 0;
 requires "Env::Modulecmd" => "1.3";
 requires 'Devel::IPerl' => "0.009";
 
