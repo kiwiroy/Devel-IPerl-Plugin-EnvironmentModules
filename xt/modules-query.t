@@ -34,12 +34,12 @@ is $iperl->$cb(qr{^gcc/}), 'no match', 'no match';
 is $iperl->$cb(qr{avail}), 'avail', 'match';
 
 {
+  no strict 'refs';
   no warnings 'redefine';
-  eval <<'EOF';
-sub Devel::IPerl::Plugin::EnvironmentModules::avail {
-  return join "\n", qw{alpha beta gamma}, 'delta   theta    Epsilon/1';
-}
-EOF
+  # *{"${class}::$_"} = $NAME->("${class}::$_", $patch{$_}) for keys %patch;
+  local *{'Devel::IPerl::Plugin::EnvironmentModules::avail'} = sub {
+    return join "\n", qw{alpha beta gamma}, 'delta   theta    Epsilon/1';
+  };
 
   $cb = $iperl->can("module_search");
   is $iperl->$cb(qr{^alpha$}), 'alpha', 'match';
@@ -51,16 +51,16 @@ EOF
 }
 
 {
+  no strict 'refs';
   no warnings 'redefine';
-  eval <<'EOF';
-sub Devel::IPerl::Plugin::EnvironmentModules::list {
-  return <<'EOM';
+  local *{'Devel::IPerl::Plugin::EnvironmentModules::list'} = sub {
+    return <<'EOM';
 Currently Loaded Modulefiles:
   1) use.own            3) texlive/20151117   5) samtools/1.2
   2) system/0.3         4) pandoc/1.19.2
 EOM
-}
-EOF
+  };
+
   $cb = $iperl->can("module_list_array");
   is_deeply $iperl->$cb(),
     ['use.own', 'texlive/20151117', 'samtools/1.2', 'system/0.3', 'pandoc/1.19.2'],
