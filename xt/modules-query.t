@@ -15,7 +15,9 @@ my $iperl = new_ok('IPerl');
 
 is $iperl->load_plugin('EnvironmentModules'), 1, 'loaded';
 
-can_ok $iperl, qw{module_avail module_load module_list module_show module_unload};
+can_ok $iperl,
+  qw{module_avail module_load module_list_array module_list module_search
+     module_show module_unload};
 
 for my $name(qw{avail list}){
   my $cb = $iperl->can("module_$name");
@@ -26,5 +28,43 @@ my $cb = $iperl->can("module_show");
 is $iperl->$cb(), -1, 'empty args == -1';
 is $iperl->$cb('modulename'), "show\n", 'returns stderr';
 
+$cb = $iperl->can("module_search");
+is $iperl->$cb(), -1, 'empty args == -1';
+is $iperl->$cb(qr{^gcc/}), 'no match', 'no match';
+is $iperl->$cb(qr{avail}), 'avail', 'match';
+
+{
+  no warnings 'redefine';
+  eval <<'EOF';
+sub Devel::IPerl::Plugin::EnvironmentModules::avail {
+  return join "\n", qw{alpha beta gamma}, 'delta   theta    Epsilon/1';
+}
+EOF
+
+  $cb = $iperl->can("module_search");
+  is $iperl->$cb(qr{^alpha$}), 'alpha', 'match';
+  is $iperl->$cb(qr{^beta$}), 'beta', 'match';
+  is $iperl->$cb(qr{^delta$}), 'delta', 'match';
+  is $iperl->$cb(qr{^(alpha|theta)$}), join("\n", qw{alpha theta}), 'match';
+  is $iperl->$cb(qr{^(theta|epsilon/1|beta)$}i),
+    join("\n", qw{beta Epsilon/1 theta}), 'matches sorted';
+}
+
+{
+  no warnings 'redefine';
+  eval <<'EOF';
+sub Devel::IPerl::Plugin::EnvironmentModules::list {
+  return <<'EOM';
+Currently Loaded Modulefiles:
+  1) use.own            3) texlive/20151117   5) samtools/1.2
+  2) system/0.3         4) pandoc/1.19.2
+EOM
+}
+EOF
+  $cb = $iperl->can("module_list_array");
+  is_deeply $iperl->$cb(),
+    ['use.own', 'texlive/20151117', 'samtools/1.2', 'system/0.3', 'pandoc/1.19.2'],
+    'sorted list of loaded modules';
+}
 
 done_testing
